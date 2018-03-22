@@ -15,7 +15,7 @@ namespace CursoOnline.DominioTest.Curso
             {
                 Nome = "Curso 1",
                 CargaHoraria = 20,
-                PublicoAlvo = "Estudantes",
+                PublicoAlvo = PublicoAlvo.Estudante,
                 Valor = 10.0M
             };
 
@@ -24,16 +24,87 @@ namespace CursoOnline.DominioTest.Curso
             cursoEsperado.ToExpectedObject().ShouldMatch(curso);
 
         }
+        [Theory]
+        [InlineDataAttribute("")]
+        [InlineDataAttribute(null)]
+        public void NomeCursoNaoDeveTerNomeInvalido(string nomeInvalido)
+        {
+            var cursoEsperado = new
+            {
+                Nome = "Curso 1",
+                CargaHoraria = 20,
+                PublicoAlvo = PublicoAlvo.Estudante,
+                Valor = 10.0M
+            };
 
+            Assert.Throws<ArgumentException>(() =>
+            new Curso(nomeInvalido, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
+        }
 
+        [Theory]
+        [InlineDataAttribute(0)]
+        [InlineDataAttribute(-1)]
+        [InlineDataAttribute(-100)]
+        public void CargaHorariaCursoNaoDeveSerInvalida(int cargaHorariaInvalida)
+        {
+            var cursoEsperado = new
+            {
+                Nome = "Curso 1",
+                CargaHoraria = cargaHorariaInvalida,
+                PublicoAlvo = PublicoAlvo.Estudante,
+                Valor = 10.0M
+            };
+
+            var message  = Assert.Throws<ArgumentException>(() =>
+            new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).Message;
+
+            Assert.Equal("Carga horaria curso invalida", message);
+        }
+
+        [Theory]
+        [InlineDataAttribute(-1)]
+        [InlineDataAttribute(-10)]
+        [InlineDataAttribute(-100)]
+        public void ValorCursoNaoDeveSerMenorQueZero(decimal valorCursoInvalido)
+        {
+            var cursoEsperado = new
+            {
+                Nome = "Curso 1",
+                CargaHoraria = 20,
+                PublicoAlvo = PublicoAlvo.Estudante,
+                Valor = valorCursoInvalido
+            };
+
+            var message = Assert.Throws<ArgumentException>(() =>
+           new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).Message;
+
+            Assert.Equal("valor curso não pode ser menor que zero", message);
+        }
 
     }
 
-  
+    public enum PublicoAlvo
+    {
+        Estudante,
+        Universitario,
+        Emprego,
+        Empreendedor
+    }
+
     public class Curso
     {
-        public Curso(string nome, int cargaHoraria, string publicoAlvo, decimal valor)
+        public Curso(string nome, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
         {
+            if (string.IsNullOrEmpty(nome))
+                throw new ArgumentException("Nome curso invalido");
+
+            if (cargaHoraria < 1)
+                throw new ArgumentException("Carga horaria curso invalida");
+
+            if (valor < 0)
+                throw new ArgumentException("valor curso não pode ser menor que zero");
+
+
             Nome = nome;
             CargaHoraria = cargaHoraria;
             PublicoAlvo = publicoAlvo;
@@ -42,7 +113,7 @@ namespace CursoOnline.DominioTest.Curso
 
         public string Nome { get; internal set; }
         public int CargaHoraria { get; internal set; }
-        public string PublicoAlvo { get; internal set; }
+        public PublicoAlvo PublicoAlvo { get; internal set; }
         public decimal Valor { get; internal set; }
     }
 }
