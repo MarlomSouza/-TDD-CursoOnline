@@ -1,4 +1,5 @@
-﻿using ExpectedObjects;
+﻿using CursoOnline.DominioTest._util;
+using ExpectedObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -31,14 +32,14 @@ namespace CursoOnline.DominioTest.Curso
         {
             var cursoEsperado = new
             {
-                Nome = "Curso 1",
+                Nome = nomeInvalido,
                 CargaHoraria = 20,
                 PublicoAlvo = PublicoAlvo.Estudante,
                 Valor = 10.0M
             };
 
             Assert.Throws<ArgumentException>(() =>
-            new Curso(nomeInvalido, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor));
+            new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).WithMessage("Nome curso invalido");
         }
 
         [Theory]
@@ -55,10 +56,8 @@ namespace CursoOnline.DominioTest.Curso
                 Valor = 10.0M
             };
 
-            var message  = Assert.Throws<ArgumentException>(() =>
-            new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).Message;
-
-            Assert.Equal("Carga horaria curso invalida", message);
+            Assert.Throws<ArgumentException>(() =>
+            new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).WithMessage("Carga horaria curso invalida");
         }
 
         [Theory]
@@ -75,10 +74,9 @@ namespace CursoOnline.DominioTest.Curso
                 Valor = valorCursoInvalido
             };
 
-            var message = Assert.Throws<ArgumentException>(() =>
-           new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).Message;
+            Assert.Throws<ArgumentException>(() =>
+           new Curso(cursoEsperado.Nome, cursoEsperado.CargaHoraria, cursoEsperado.PublicoAlvo, cursoEsperado.Valor)).WithMessage("valor curso não pode ser menor que zero");
 
-            Assert.Equal("valor curso não pode ser menor que zero", message);
         }
 
     }
