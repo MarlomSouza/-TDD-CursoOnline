@@ -1,24 +1,26 @@
-﻿using CursoOnline.DominioTest._util;
+﻿using CursoOnline.DominioTest._Builders;
+using CursoOnline.DominioTest._util;
 using ExpectedObjects;
 using System;
 using Xunit;
-using Xunit.Abstractions;
 
-namespace CursoOnline.DominioTest.Curso
+namespace CursoOnline.DominioTest.Cursos
 {
     public class CursoTeste
     {
-        private readonly string Nome;
+        private readonly string nome;
         private readonly int cargaHoraria;
         private readonly PublicoAlvo publicoAlvo;
         private readonly decimal valor;
+        private readonly string descricao;
 
         public CursoTeste()
         {
-            Nome = "Curso 1";
+            nome = "Curso 1";
             cargaHoraria = 20;
             publicoAlvo = PublicoAlvo.Estudante;
             valor = 10.0M;
+            descricao = "uma descricao";
         }
 
         [Fact]
@@ -26,13 +28,14 @@ namespace CursoOnline.DominioTest.Curso
         {
             var cursoEsperado = new
             {
-                Nome = "Curso 1",
-                CargaHoraria = 20,
-                PublicoAlvo = PublicoAlvo.Estudante,
-                Valor = 10.0M
+                Nome = nome,
+                CargaHoraria = cargaHoraria,
+                PublicoAlvo = publicoAlvo,
+                Valor = valor,
+                Descricao = descricao
             };
 
-            var curso = new Curso(Nome, cargaHoraria, publicoAlvo, valor);
+            var curso = CursoBuilder.New().Build();
 
             cursoEsperado.ToExpectedObject().ShouldMatch(curso);
 
@@ -43,7 +46,7 @@ namespace CursoOnline.DominioTest.Curso
         public void NomeCursoNaoDeveTerNomeInvalido(string nomeInvalido)
         {
             Assert.Throws<ArgumentException>(() =>
-            new Curso(nomeInvalido, cargaHoraria, publicoAlvo, valor)).WithMessage("Nome curso invalido");
+            CursoBuilder.New().ComNome(nomeInvalido).Build()).WithMessage("Nome curso invalido");
         }
 
         [Theory]
@@ -53,7 +56,7 @@ namespace CursoOnline.DominioTest.Curso
         public void CargaHorariaCursoNaoDeveSerInvalida(int cargaHorariaInvalida)
         {
             Assert.Throws<ArgumentException>(() =>
-            new Curso(Nome, cargaHorariaInvalida, publicoAlvo, valor)).WithMessage("Carga horaria curso invalida");
+            CursoBuilder.New().ComCargaHoraria(cargaHorariaInvalida).Build()).WithMessage("Carga horaria curso invalida");
         }
 
         [Theory]
@@ -63,7 +66,7 @@ namespace CursoOnline.DominioTest.Curso
         public void ValorCursoNaoDeveSerMenorQueZero(decimal valorCursoInvalido)
         {
             Assert.Throws<ArgumentException>(() =>
-           new Curso(Nome, cargaHoraria, publicoAlvo, valorCursoInvalido)).WithMessage("valor curso não pode ser menor que zero");
+           CursoBuilder.New().ComValor(valorCursoInvalido).Build()).WithMessage("valor curso não pode ser menor que zero");
 
         }
 
@@ -79,7 +82,7 @@ namespace CursoOnline.DominioTest.Curso
 
     public class Curso
     {
-        public Curso(string nome, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
+        public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
         {
             if (string.IsNullOrEmpty(nome))
                 throw new ArgumentException("Nome curso invalido");
@@ -92,14 +95,16 @@ namespace CursoOnline.DominioTest.Curso
 
 
             Nome = nome;
+            Descricao = descricao;
             CargaHoraria = cargaHoraria;
             PublicoAlvo = publicoAlvo;
             Valor = valor;
         }
 
-        public string Nome { get; internal set; }
-        public int CargaHoraria { get; internal set; }
-        public PublicoAlvo PublicoAlvo { get; internal set; }
-        public decimal Valor { get; internal set; }
+        public string Nome { get; private set; }
+        public string Descricao { get; private set; }
+        public int CargaHoraria { get; private set; }
+        public PublicoAlvo PublicoAlvo { get; private set; }
+        public decimal Valor { get; private set; }
     }
 }
