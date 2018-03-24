@@ -1,4 +1,6 @@
-﻿using CursoOnline.DominioTest._Builders;
+﻿using Bogus;
+using CursoOnline.Dominio.Cursos;
+using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._util;
 using ExpectedObjects;
 using System;
@@ -35,7 +37,7 @@ namespace CursoOnline.DominioTest.Cursos
                 Descricao = descricao
             };
 
-            var curso = CursoBuilder.New().Build();
+            var curso = new Curso(nome, descricao, cargaHoraria, publicoAlvo, valor);
 
             cursoEsperado.ToExpectedObject().ShouldMatch(curso);
 
@@ -72,39 +74,7 @@ namespace CursoOnline.DominioTest.Cursos
 
     }
 
-    public enum PublicoAlvo
-    {
-        Estudante,
-        Universitario,
-        Emprego,
-        Empreendedor
-    }
+  
 
-    public class Curso
-    {
-        public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
-        {
-            if (string.IsNullOrEmpty(nome))
-                throw new ArgumentException("Nome curso invalido");
-
-            if (cargaHoraria < 1)
-                throw new ArgumentException("Carga horaria curso invalida");
-
-            if (valor < 0)
-                throw new ArgumentException("valor curso não pode ser menor que zero");
-
-
-            Nome = nome;
-            Descricao = descricao;
-            CargaHoraria = cargaHoraria;
-            PublicoAlvo = publicoAlvo;
-            Valor = valor;
-        }
-
-        public string Nome { get; private set; }
-        public string Descricao { get; private set; }
-        public int CargaHoraria { get; private set; }
-        public PublicoAlvo PublicoAlvo { get; private set; }
-        public decimal Valor { get; private set; }
-    }
+   
 }
