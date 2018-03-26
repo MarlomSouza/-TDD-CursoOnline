@@ -4,7 +4,7 @@ namespace CursoOnline.Dominio.Cursos
 {
     public class Curso
     {
-        public Curso(string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
+        public Curso(int id, string nome, string descricao, int cargaHoraria, PublicoAlvo publicoAlvo, decimal valor)
         {
             if (string.IsNullOrEmpty(nome))
                 throw new ArgumentException("Nome curso invalido");
@@ -15,7 +15,7 @@ namespace CursoOnline.Dominio.Cursos
             if (valor < 0)
                 throw new ArgumentException("valor curso não pode ser menor que zero");
 
-
+            Id = id;
             Nome = nome;
             Descricao = descricao;
             CargaHoraria = cargaHoraria;
@@ -23,6 +23,7 @@ namespace CursoOnline.Dominio.Cursos
             Valor = valor;
         }
 
+        public int Id { get; private set; }
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public int CargaHoraria { get; private set; }
