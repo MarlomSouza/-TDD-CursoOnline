@@ -10,7 +10,7 @@ namespace CursoOnline.DominioTest.Cursos
     public class RemoverCursoTeste
     {
         private CursoDto cursoDTO;
-        private readonly Mock<ICursoRepository> cursoRepitosyMock;
+        private readonly Mock<ICursoRepository> cursoRepitoryMock;
         private readonly RemovedorCurso removedorCurso;
 
         public RemoverCursoTeste()
@@ -27,8 +27,8 @@ namespace CursoOnline.DominioTest.Cursos
                 Valor = faker.Random.Decimal(10, 1000)
             };
 
-            cursoRepitosyMock = new Mock<ICursoRepository>();
-            removedorCurso = new RemovedorCurso(cursoRepitosyMock.Object);
+            cursoRepitoryMock = new Mock<ICursoRepository>();
+            removedorCurso = new RemovedorCurso(cursoRepitoryMock.Object);
         }
 
 
@@ -36,22 +36,17 @@ namespace CursoOnline.DominioTest.Cursos
         public void RemoverCursoExistente()
         {
             var cursoJaSalvo = CursoBuilder.New().ComId(cursoDTO.Id).Build();
-            cursoRepitosyMock.Setup(r => r.Buscar(cursoDTO.Id)).Returns(cursoJaSalvo);
+            cursoRepitoryMock.Setup(r => r.Buscar(cursoDTO.Id)).Returns(cursoJaSalvo);
 
             removedorCurso.remover(cursoDTO.Id);
 
             //Then
-            cursoRepitosyMock.Verify(r => r.Remover(cursoDTO.Id), Times.AtLeast(1));
+            cursoRepitoryMock.Verify(r => r.Remover(cursoDTO.Id), Times.AtLeast(1));
         }
 
         [Fact]
         public void NaoDeveRemoverCursoInexistente()
         {
-            //Given
-            var cursoJaSalvo = CursoBuilder.New().ComId(cursoDTO.Id).Build();
-
-            cursoRepitosyMock.Setup(r => r.Buscar(cursoDTO.Id));
-            //Then
             Assert.Throws<ArgumentException>(() => removedorCurso.remover(cursoDTO.Id)).WithMessage("Não é possivel remover um curso inexistente!");
         }
 
