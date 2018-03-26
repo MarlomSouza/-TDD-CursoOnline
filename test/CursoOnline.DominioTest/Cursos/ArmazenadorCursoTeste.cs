@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using CursoOnline.Dominio.Cursos;
+using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._util;
 using Moq;
 using System;
@@ -41,7 +42,15 @@ namespace CursoOnline.DominioTest.Cursos
         public void NaoDeveSetarPublicoAlvoInvalido()
         {
             cursoDTO.PublicoAlvo = "Outros";
-            Assert.Throws<ArgumentException>(()=> armazenadorCurso.Armazenar(cursoDTO)).WithMessage("Publico alvo inválido");
+            Assert.Throws<ArgumentException>(() => armazenadorCurso.Armazenar(cursoDTO)).WithMessage("Publico alvo inválido");
+        }
+
+        [Fact]
+        public void NaoDeveAdicionarCursoComNomeJaExistente()
+        {
+            var cursoJaSalvo = CursoBuilder.New().ComNome(cursoDTO.Nome).Build();
+            cursoRepositoryMock.Setup(r => r.BuscarPorNome(cursoDTO.Nome)).Returns(cursoJaSalvo);
+            Assert.Throws<ArgumentException>(() => armazenadorCurso.Armazenar(cursoDTO)).WithMessage("Nome do curso já existente!");
         }
     }
 
@@ -62,10 +71,16 @@ namespace CursoOnline.DominioTest.Cursos
 
         public void Armazenar(CursoDto cursoDTO)
         {
+            var curso = _cursoRepository.BuscarPorNome(cursoDTO.Nome);
+
+            if (curso != null)
+                throw new ArgumentException("Nome do curso já existente!");
+
+
             if (!Enum.TryParse(typeof(PublicoAlvo), cursoDTO.PublicoAlvo, out var publicoAlvo))
                 throw new ArgumentException("Publico alvo inválido");
 
-            var curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, (PublicoAlvo)publicoAlvo, cursoDTO.Valor);
+            curso = new Curso(cursoDTO.Nome, cursoDTO.Descricao, cursoDTO.CargaHoraria, (PublicoAlvo)publicoAlvo, cursoDTO.Valor);
             _cursoRepository.Adicionar(curso);
         }
     }
