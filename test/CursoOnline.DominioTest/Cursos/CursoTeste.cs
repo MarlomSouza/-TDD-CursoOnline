@@ -10,6 +10,7 @@ namespace CursoOnline.DominioTest.Cursos
 {
     public class CursoTeste
     {
+        private readonly int id;
         private readonly string nome;
         private readonly int cargaHoraria;
         private readonly PublicoAlvo publicoAlvo;
@@ -18,6 +19,7 @@ namespace CursoOnline.DominioTest.Cursos
 
         public CursoTeste()
         {
+            id = 2;
             nome = "Curso 1";
             cargaHoraria = 20;
             publicoAlvo = PublicoAlvo.Estudante;
@@ -30,6 +32,7 @@ namespace CursoOnline.DominioTest.Cursos
         {
             var cursoEsperado = new
             {
+                Id = id,
                 Nome = nome,
                 CargaHoraria = cargaHoraria,
                 PublicoAlvo = publicoAlvo,
@@ -37,7 +40,7 @@ namespace CursoOnline.DominioTest.Cursos
                 Descricao = descricao
             };
 
-            var curso = new Curso(nome, descricao, cargaHoraria, publicoAlvo, valor);
+            var curso = new Curso(id, nome, descricao, cargaHoraria, publicoAlvo, valor);
 
             cursoEsperado.ToExpectedObject().ShouldMatch(curso);
 
@@ -74,7 +77,7 @@ namespace CursoOnline.DominioTest.Cursos
 
     }
 
-  
 
-   
+
+
 }
