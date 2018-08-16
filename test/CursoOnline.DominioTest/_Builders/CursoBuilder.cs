@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio;
 using CursoOnline.DominioTest.Cursos;
 
 
@@ -7,14 +7,12 @@ namespace CursoOnline.DominioTest._Builders
 {
     public class CursoBuilder
     {
-        
+
         private string nome;
         private int cargaHoraria;
         private PublicoAlvo publicoAlvo;
         private decimal valor;
         private string descricao;
-
-   
 
         public static CursoBuilder New()
         {
@@ -62,6 +60,6 @@ namespace CursoOnline.DominioTest._Builders
             return this;
         }
 
-        public Curso Build() => new Curso(nome,descricao, cargaHoraria, publicoAlvo, valor);
+        public Curso Build() => new Curso(nome, descricao, cargaHoraria, publicoAlvo, valor);
     }
 }
