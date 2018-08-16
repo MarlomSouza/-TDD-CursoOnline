@@ -20,7 +20,7 @@ namespace CursoOnline.DominioTest._Builders
                 publicoAlvo = faker.PickRandom(PublicoAlvo.Empreendedor,
                 PublicoAlvo.Emprego, PublicoAlvo.Estudante, PublicoAlvo.Universitario)
             };
-            var a = Aluno();
+            
 
         }
 

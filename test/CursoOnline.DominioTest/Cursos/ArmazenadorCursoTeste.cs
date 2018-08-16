@@ -1,5 +1,5 @@
 ﻿using Bogus;
-using CursoOnline.Dominio.Cursos;
+using CursoOnline.Dominio;
 using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._util;
 using Moq;
