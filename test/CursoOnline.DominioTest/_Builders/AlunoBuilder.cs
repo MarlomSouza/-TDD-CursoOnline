@@ -12,6 +12,7 @@ namespace CursoOnline.DominioTest._Builders
         public static AlunoBuilder Novo()
         {
             var faker = new Faker();
+
             return new AlunoBuilder()
             {
                 nome = faker.Name.FullName(),
@@ -20,10 +21,14 @@ namespace CursoOnline.DominioTest._Builders
                 publicoAlvo = faker.PickRandom(PublicoAlvo.Empreendedor,
                 PublicoAlvo.Emprego, PublicoAlvo.Estudante, PublicoAlvo.Universitario)
             };
-            
+
 
         }
-
+        public AlunoBuilder ComEmail(string email)
+        {
+            this.email = email;
+            return this;
+        }
         public Aluno Build() => new Aluno(nome, cpf, email, publicoAlvo);
     }
 }
