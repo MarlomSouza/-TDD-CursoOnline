@@ -6,7 +6,7 @@ using CursoOnline.DominioTest._util;
 using ExpectedObjects;
 using Xunit;
 
-namespace CursoOnline.DominioTest.Alunos
+namespace CursoOnline.DominioTest.Alunos.Armazenador
 {
     public class AlunoTeste
     {
@@ -48,11 +48,30 @@ namespace CursoOnline.DominioTest.Alunos
         }
 
         [Theory]
-        [InlineData("asds@com")]
-        public void NaoDeveCriarAlunoComNomeInvalido(string emailInvalido)
+        [InlineData("")]
+        [InlineData(" ")]
+        [InlineData(null)]
+        public void NaoDeveCriarAlunoComNomeInvalido(string nomeInvalido)
+        {
+            Assert.Throws<ArgumentException>(() =>
+            (AlunoBuilder.Novo().ComNome(nomeInvalido).Build())).WithMessage("Nome inválido");
+        }
+
+        [Theory]
+        [InlineData("")]
+        public void NaoDeveCriarAlunoComEmailInvalido(string emailInvalido)
         {
             Assert.Throws<ArgumentException>(() =>
             (AlunoBuilder.Novo().ComEmail(emailInvalido).Build())).WithMessage("Email inválido");
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void NaoDeveCriarAlunoComCpfInvalido(string cpfInvalido)
+        {
+            Assert.Throws<ArgumentException>(() =>
+            (AlunoBuilder.Novo().ComCpf(cpfInvalido).Build())).WithMessage("cpf inválido");
         }
 
     }

@@ -1,6 +1,4 @@
 using System;
-using System.Text.RegularExpressions;
-using CursoOnline.Dominio;
 
 namespace CursoOnline.Dominio
 {
@@ -18,13 +16,13 @@ namespace CursoOnline.Dominio
 
         private void Valida(string nome, string cpf, string email)
         {
-            if (string.IsNullOrEmpty(nome))
+            if (string.IsNullOrWhiteSpace(nome))
                 throw new ArgumentException("Nome inválido");
 
-            if (string.IsNullOrEmpty(cpf))
+            if (string.IsNullOrWhiteSpace(cpf))
                 throw new ArgumentException("cpf inválido");
 
-            if (Regex.IsMatch(email, @"/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i"))
+            if (string.IsNullOrWhiteSpace(email))
                 throw new ArgumentException("Email inválido");
         }
 

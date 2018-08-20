@@ -1,5 +1,6 @@
 ﻿using Bogus;
 using CursoOnline.Dominio;
+using CursoOnline.Dominio.Cursos;
 using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._util;
 using ExpectedObjects;
@@ -72,12 +73,7 @@ namespace CursoOnline.DominioTest.Cursos
         {
             Assert.Throws<ArgumentException>(() =>
            CursoBuilder.New().ComValor(valorCursoInvalido).Build()).WithMessage("valor curso não pode ser menor que zero");
-
         }
-
     }
-
-
-
 
 }

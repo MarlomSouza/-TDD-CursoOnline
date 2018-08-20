@@ -1,3 +1,4 @@
+using System;
 using Bogus;
 using CursoOnline.Dominio;
 
@@ -29,6 +30,18 @@ namespace CursoOnline.DominioTest._Builders
             this.email = email;
             return this;
         }
+
+        public AlunoBuilder ComNome(string nome)
+        {
+            this.nome = nome;
+            return this;
+        }
         public Aluno Build() => new Aluno(nome, cpf, email, publicoAlvo);
+
+        public AlunoBuilder ComCpf(string cpf)
+        {
+            this.cpf = cpf;
+            return this;
+        }
     }
 }

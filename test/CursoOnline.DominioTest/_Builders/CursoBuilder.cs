@@ -1,8 +1,6 @@
-using System;
 using Bogus;
 using CursoOnline.Dominio;
-using CursoOnline.DominioTest.Cursos;
-
+using CursoOnline.Dominio.Cursos;
 
 namespace CursoOnline.DominioTest._Builders
 {

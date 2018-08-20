@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CursoOnline.Dominio
+namespace CursoOnline.Dominio.Cursos
 {
     public class Curso
     {

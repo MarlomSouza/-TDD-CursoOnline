@@ -1,5 +1,6 @@
 using System;
 using Bogus;
+using CursoOnline.Dominio.Cursos;
 using CursoOnline.DominioTest._Builders;
 using CursoOnline.DominioTest._util;
 using Moq;
@@ -15,7 +16,6 @@ namespace CursoOnline.DominioTest.Cursos
 
         public RemoverCursoTeste()
         {
-
             var faker = new Faker();
             cursoDTO = new CursoDto
             {
@@ -47,28 +47,9 @@ namespace CursoOnline.DominioTest.Cursos
         [Fact]
         public void NaoDeveRemoverCursoInexistente()
         {
-            Assert.Throws<ArgumentException>(() => removedorCurso.remover(cursoDTO.Id)).WithMessage("Não é possivel remover um curso inexistente!");
+            Assert.Throws<ArgumentException>(() => removedorCurso.remover(cursoDTO.Id))
+            .WithMessage("NÃ£o Ã© possivel remover um curso inexistente!");
         }
 
-    }
-
-    public class RemovedorCurso
-    {
-        private readonly ICursoRepository _cursoRepository;
-
-        public RemovedorCurso(ICursoRepository cursoRepository)
-        {
-            _cursoRepository = cursoRepository;
-        }
-
-        public void remover(int id)
-        {
-            var curso = _cursoRepository.Buscar(id);
-
-            if(curso == null)
-                throw new ArgumentException("Não é possivel remover um curso inexistente!");
-
-            _cursoRepository.Remover(id);
-        }
     }
 }
